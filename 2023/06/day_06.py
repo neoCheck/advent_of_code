@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-DAY_6_INPUT = """Time:        54     94     65     92
-Distance:   302   1476   1029   1404"""
-
 
 class BoatRaceRecord:
     def __init__(self, time: int, distance: int) -> None:
@@ -32,7 +29,8 @@ def parse(day_input: str) -> list[BoatRaceRecord]:
 
 
 if __name__ == "__main__":
-    result = parse(DAY_6_INPUT)
+    input_ = open("input").read().strip()
+    result = parse(input_)
 
     n_ways = 1
     for r in result:
