@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-# pip install shapely
-from shapely.geometry import Polygon, Point
-
 
 class Node:
 
@@ -17,7 +14,6 @@ class Node:
         self.west = None
 
         self.part_of_loop = False
-        self.inside_of_loop = False
 
     def __repr__(self):
         return self.pipe
@@ -48,22 +44,26 @@ class Node:
         if self.pipe in ["J", "7", "-", "S"]:
             self.connect_west()
 
-    def get_polygon_loop(self) -> Polygon:
+    def mark_enclosure(self) -> None:
         current_node = self
         previous_node = None
 
-        points = [(self.i, self.j)]
         while current_node:
             current_node.part_of_loop = True
             next_nodes = [current_node.north, current_node.south, current_node.east, current_node.west]
             next_nodes = [n for n in next_nodes if n and n not in (self, current_node, previous_node)]
             previous_node = current_node
             current_node = next_nodes[0] if next_nodes else None
-            if current_node:
-                points.append((current_node.i, current_node.j))
 
-        points += [(self.i, self.j)]
-        return Polygon(points)
+    @property
+    def inside_of_loop(self) -> bool:
+        times_met_enclosure = 0
+        for j in range(self.j, len(self.map[self.i])):
+            node = self.map[self.i][j]
+            if node.part_of_loop and node.pipe in ["J", "L", "S", "|"]:
+                times_met_enclosure += 1
+
+        return bool(times_met_enclosure % 2)
 
 
 def parse(day_input: str) -> Node:
@@ -85,14 +85,10 @@ def parse(day_input: str) -> Node:
     return start
 
 
-def print_map(map_: list[list[Node]], polygon: Polygon):
+def print_map(map_: list[list[Node]]):
     counter = 0
     for node_list in map_:
         for node in node_list:
-            if not node.part_of_loop:
-                point = Point(node.i, node.j)
-                node.inside_of_loop = polygon.contains(point)
-
             if node.part_of_loop:
                 print(f"\033[95m{node.pipe}\033[0m", end="")
             elif node.inside_of_loop:
@@ -110,6 +106,6 @@ if __name__ == "__main__":
         input_ = f.read().strip()
 
     s = parse(input_)
-    p = s.get_polygon_loop()
+    s.mark_enclosure()
 
-    print_map(s.map, p)
+    print_map(s.map)
