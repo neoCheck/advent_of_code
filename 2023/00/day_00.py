@@ -7,9 +7,9 @@ def parse(day_input: str) -> list[str]:
 
 def main():
     with open("input") as f:
-        input_ = f.read().strip()
+        day_input = f.read().strip()
 
-    print(input_)
+    print(day_input)
 
 
 if __name__ == "__main__":
