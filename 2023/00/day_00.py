@@ -9,7 +9,9 @@ def main():
     with open("input") as f:
         day_input = f.read().strip()
 
-    print(day_input)
+    parsed_input = parse(day_input)
+
+    print(parsed_input)
 
 
 if __name__ == "__main__":
