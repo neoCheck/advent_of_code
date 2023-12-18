@@ -5,7 +5,7 @@ def parse(day_input: str) -> list[str]:
     return [line for line in day_input.split("\n")]
 
 
-def main():
+def main() -> None:
     with open("input") as f:
         day_input = f.read().strip()
 
