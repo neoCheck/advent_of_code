@@ -84,4 +84,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    # Bonjour, je m'appelle Jose Bourinho
     main()
