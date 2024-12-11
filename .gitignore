@@ -268,4 +268,4 @@ cython_debug/
 .idea/
 
 input
-input_test
+input_test*
